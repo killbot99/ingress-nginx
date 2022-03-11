@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    #kubernetes.io/tls-acme: "false"
+    testing: "true"
+  #generation: 4
+  name: ingress1
+  namespace: testing
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: www.google.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: service1
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific

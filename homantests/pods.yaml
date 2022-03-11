@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  generation: 1
+  labels:
+    app: pod1
+  name: pod1
+  namespace: testing
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pod1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pod1
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: pod1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'pod1' > /usr/share/nginx/html/index.html"]
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  generation: 1
+  labels:
+    app: pod2
+  name: pod2
+  namespace: testing
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pod2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pod2
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: pod2
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'pod2' > /usr/share/nginx/html/index.html"]
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
